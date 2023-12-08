@@ -1,0 +1,38 @@
+{
+  "AAPL": {
+    "name": "AAPL",
+    "price": 190.4
+  },
+  "GOOGL": {
+    "name": "GOOGL",
+    "price": 137.2
+  },
+  "MSFT": {
+    "name": "MSFT",
+    "price": 382.7
+  },
+  "AMZN": {
+    "name": "AMZN",
+    "price": 147.03
+  },
+  "TSLA": {
+    "name": "TSLA",
+    "price": 246.72
+  },
+  "NVDA": {
+    "name": "NVDA",
+    "price": 478.21
+  },
+  "NFLX": {
+    "name": "NFLX",
+    "price": 479.0
+  },
+  "PYPL": {
+    "name": "PYPL",
+    "price": 58.47
+  },
+  "V": {
+    "name": "V",
+    "price": 252.94
+  }
+}

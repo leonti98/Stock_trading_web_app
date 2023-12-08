@@ -1,0 +1,237 @@
+/* Reset some default styles */
+body,
+h1,
+h2,
+h3,
+p,
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+    color: #fff;
+    padding-top: 50px;
+}
+
+/* Header styles */
+header {
+    background-color: #292b2c00;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    text-transform: capitalize;
+}
+
+/* Navigation styles */
+nav {
+    background-color: rgba(48, 32, 102, 0.151);
+    padding: 15px;
+    text-align: center;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 20px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: #ffcc00;
+}
+
+/* Main content styles */
+main {
+    padding: 20px;
+    margin: 20px;
+    background-color: rgba(48, 32, 102, 0.151);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Form styles */
+form {
+    margin-top: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+input,
+select {
+    width: 80%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #ffcc00;
+    color: #333;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #e5b200;
+}
+
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 15px;
+    text-align: left;
+}
+
+th {
+    background-color: #223648;
+    color: #fff;
+}
+
+/* Buy and Sell section styles */
+.buy-sell-sections {
+    display: flex;
+    justify-content: space-between;
+}
+
+#buy-section,
+#sell-section {
+    width: 48%;
+    /* Adjust as needed to leave some space between the sections */
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 10px;
+}
+
+/* Footer styles */
+footer {
+    background-color: #292b2c;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Apply flex styles to the page container */
+.page-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Center align the form content */
+.form-container {
+    text-align: center;
+}
+
+/* Style the registration form */
+.registration-form {
+    background-color: #298ccc;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    /* Ensure the container wraps its content */
+    max-width: 400px;
+    /* Set the maximum width */
+    width: 100%;
+    /* Take up 100% of the available width */
+    margin: 0 auto;
+    /* Center the container */
+}
+
+/* Style the registration form inputs and labels */
+.registration-form form {
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+/* Style the registration form submit button */
+.registration-form input[type="submit"] {
+    background-color: #4caf50;
+    color: rgb(8, 6, 6);
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.registration-form input[type="submit"]:hover {
+    background-color: #2980b9;
+}
+
+/* Style the login form */
+.login-form {
+    background-color: #298ccc;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    /* Ensure the container wraps its content */
+    max-width: 400px;
+    /* Set the maximum width */
+    width: 100%;
+    /* Take up 100% of the available width */
+    margin: 0 auto;
+    /* Center the container */
+}
+
+/* Style the login form inputs and labels */
+.login-form form {
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+/* Style the login form submit button */
+.login-form input[type="submit"] {
+    background-color: #4caf50;
+    color: rgb(13, 11, 11);
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.login-form input[type="submit"]:hover {
+    background-color: #2980b9;
+}
+
+/* Style the register button in the login form */
+.login-form .register-button-container input[type="submit"] {
+    background-color: #4caf50;
+    color: rgb(5, 3, 3);
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.login-form .register-button-container input[type="submit"]:hover {
+    background-color: #2980b9;
+}

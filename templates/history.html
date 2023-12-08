@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Transaction History</title>
+    <style>
+        h2 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Stock Market Simulator</h1>
+        <nav>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </nav>
+    </header>
+
+    <h2>{{ username }}'s Transaction History</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Type</th>
+                <th>Quantity</th>
+                <th>Symbol</th>
+                <th>Price Each</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transaction_history %}
+                <tr>
+                    <td>{{ transaction['timestamp'] }}</td>
+                    <td>{{ transaction['type'] }}</td>
+                    <td>{{ transaction['quantity'] }}</td>
+                    <td>{{ transaction['symbol'] }}</td>
+                    <td>${{ transaction['price'] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <header>
+        <h1>Stock Market Simulator</h1>
+    </header>
+
+    <nav>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('history') }}">Transaction History</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </nav>
+
+    <main>
+        <!-- Cash Balance section -->
+        <section id="cash-balance-section">
+            <h2>Cash Balance</h2>
+            <p id="cash-balance"></p>
+        </section>
+
+        <!-- Buy and Sell sections -->
+        <div class="buy-sell-sections">
+            <!-- Buy section -->
+            <section id="buy-section" class="buy-sell-section">
+                <h2>Buy</h2>
+                <form id="buy-form">
+                    <label for="stock_symbol">Stock Symbol</label>
+                    <input type="text" id="stock_symbol" name="symbol" required>
+
+                    <label for="quantity">Quantity</label>
+                    <input type="number" id="quantity" name="quantity" min="1" required>
+                    <br>
+                    <button type="button" onclick="buyStock()">Buy</button>
+                </form>
+            </section>
+
+            <!-- Sell section -->
+            <section id="sell-section" class="buy-sell-section">
+                <h2>Sell</h2>
+                <form id="sell-form">
+                    <label for="stock_symbol_sell">Stock Symbol</label>
+                    <input type="text" id="stock_symbol_sell" name="symbol_sell" required>
+
+                    <label for="quantity_sell">Quantity</label>
+                    <input type="number" id="quantity_sell" name="quantity_sell" min="1" required>
+                    <br>
+                    <button type="button" onclick="sellStock()">Sell</button>
+                </form>
+            </section>
+        </div>
+
+        <!-- Portfolio and Available Stocks sections -->
+        <div class="portfolio-stocks-sections">
+            <!-- Portfolio section -->
+            <section id="portfolio-section" class="portfolio-stocks-section">
+                <h2>Portfolio</h2>
+                <table id="portfolio-table">
+                    <thead>
+                        <tr>
+                            <th>Stock Symbol</th>
+                            <th>Quantity</th>
+                            <th>Total Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be dynamically added here -->
+                    </tbody>
+                </table>
+            </section>
+
+            <div style="display: flex; margin-top: 20px;">
+
+                <!-- Available Stocks section -->
+                <section id="available-stocks-section" class="portfolio-stocks-section" style="margin-right: 20px;">
+                    <h2>Available Stocks</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Stock Symbol</th>
+                                <th>Stock Name</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- This is a for loop that iterates over the stocks_db dictionary and displays the stock information in a table -->
+                            {% for symbol, stock_info in stocks_db.items() %}
+                            <tr>
+                                <td>{{ symbol }}</td>
+                                <td>{{ stock_info.name }}</td>
+                                <td>${{ stock_info.price }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Transaction History section with title -->
+                <section id="transaction-history-section" style="flex-grow: 1;">
+                    <h2>Transaction History</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Type</th>
+                                <th>Quantity</th>
+                                <th>Symbol</th>
+                                <th>Price Each</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transaction-history-body">
+                            <!-- Transaction history will be dynamically populated here -->
+                            {% for transaction in transaction_history[:10] %}
+                            <tr>
+                                <td>{{ transaction['timestamp'] }}</td>
+                                <td>{{ transaction['type'] }}</td>
+                                <td>{{ transaction['quantity'] }}</td>
+                                <td>{{ transaction['symbol'] }}</td>
+                                <td>${{ transaction['price'] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // This function sends a POST request to the server to buy a stock
+        function buyStock() {
+            let symbol = document.getElementById('stock_symbol').value;
+            let quantity = document.getElementById('quantity').value;
+
+            let data = {
+                'symbol': symbol,
+                'quantity': quantity
+            };
+
+            fetch('/buy', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then(response => {
+                // Handle the response as needed
+                console.log(response);
+                if (response.ok) {
+                    updatePageContent();
+                }
+            });
+        }
+
+        // This function sends a POST request to the server to sell a stock
+        function sellStock() {
+            let symbol = document.getElementById('stock_symbol_sell').value;
+            let quantity = document.getElementById('quantity_sell').value;
+
+            let data = {
+                'symbol': symbol,
+                'quantity': quantity
+            };
+
+            fetch('/sell', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then(response => {
+                // Handle the response as needed
+                console.log(response);
+                if (response.ok) {
+                    updatePageContent();
+                }
+            });
+        }
+
+        // This function updates the page content with the latest data from the server
+        function updatePageContent() {
+            // Fetch updated data from the server and update page elements
+            fetch('/get_user_data', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => response.json())
+                .then(data => {
+                    // Update balance
+                    let cashBalanceElement = document.getElementById('cash-balance');
+                    cashBalanceElement.innerText = '$' + data.user_cash.toFixed(2); // Round to 2 decimal places
+
+                    // Update portfolio
+                    let portfolioTable = document.getElementById('portfolio-table');
+                    let tbody = portfolioTable.querySelector('tbody');
+                    tbody.innerHTML = '';  // Clear existing rows
+
+                    // Check if user_portfolio is not empty
+                    if (data.user_portfolio && Object.keys(data.user_portfolio).length > 0) {
+                        for (let symbol in data.user_portfolio) {
+                            let row = tbody.insertRow();
+                            let cell1 = row.insertCell(0);
+                            let cell2 = row.insertCell(1);
+                            let cell3 = row.insertCell(2); // New cell for stock price
+                            cell1.innerText = symbol;
+                            cell2.innerText = data.user_portfolio[symbol];
+
+                            // Check if stock price is available
+                            if (data.stocks_db && data.stocks_db[symbol]) {
+                                const calculatedValue = data.user_portfolio[symbol].toFixed(2) * data.stocks_db[symbol].price;
+                                cell3.innerText = '$' + calculatedValue.toFixed(2);
+                            } else {
+                                cell3.innerText = 'N/A';
+                            }
+                        }
+                    } else {
+                        // If user_portfolio is empty, display a message
+                        let row = tbody.insertRow();
+                        let cell = row.insertCell(0);
+                        cell.colSpan = 3; // Update colspan to include the new cell
+                        cell.innerText = "No stocks in the portfolio.";
+                    }
+
+                    // Update transaction history table
+                    let historyTable = document.getElementById('transaction-history-body');
+                    historyTable.innerHTML = '';  // Clear existing rows
+
+                    // Display all transactions
+                    let total = 0;
+                    const startIndex = Math.max(data.transaction_history.length - 10, 0);
+
+                    for (let i = data.transaction_history.length - 1; i >= startIndex; i--) {
+                        let transaction = data.transaction_history[i];
+                        let row = historyTable.insertRow();
+                        let cell1 = row.insertCell(0);
+                        let cell2 = row.insertCell(1);
+                        let cell3 = row.insertCell(2);
+                        let cell4 = row.insertCell(3);
+                        let cell5 = row.insertCell(4);
+                        let cell6 = row.insertCell(5);  // New cell for total
+
+                        cell1.innerText = transaction['timestamp'];
+                        cell2.innerText = transaction['type'];
+                        cell3.innerText = transaction['quantity'];
+                        cell4.innerText = transaction['symbol'];
+                        cell5.innerText = '$' + transaction['price'].toFixed(2); // Round to 2 decimal places
+
+                        // Calculate and update the total
+                        total = transaction['price'] * transaction['quantity'];
+                        cell6.innerText = '$' + total.toFixed(2); // Round to 2 decimal places
+                    }
+                });
+        }
+
+        // This function is called when the DOM content is loaded
+        function onDOMContentLoaded() {
+            updatePageContent();
+        }
+
+        // Call updatePageContent() when the window is loaded
+        window.onload = function () {
+            updatePageContent();
+        };
+
+        // Add an event listener for the "DOMContentLoaded" event
+        document.addEventListener('DOMContentLoaded', onDOMContentLoaded);
+
+    </script>
+</body>
+
+</html>
